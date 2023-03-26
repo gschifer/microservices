@@ -1,0 +1,110 @@
+version: '3.4'
+services:
+  naming-server:
+    image: naming-server
+    ports: 
+      - 8761:8761
+    networks:
+      - gabriel-network
+
+  api-gateway:
+    image: api-gateway
+    ports: 
+      - 8765:8765
+    depends_on:
+      - naming-server
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
+    networks:
+      - gabriel-network
+
+  cambio-service:
+    image: cambio-service
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo 
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
+      SPRING.DATASOURCE.URL: jdbc:mysql://cambio-db:3308/cambio_service?useSSL=false&enabledTLSProtocols=TLSv1.2&createDatabaseIfNotExist=true&serverTimezone=UTC
+      SPRING.DATASOURCE.USERNAME: root
+      SPRING.DATASOURCE.PASSWORD: admin123
+      LIQUIBASE_CHANGELOG: classpath:db/changelog/db.changelog-master.xml
+      LIQUIBASE_CONTEXTS: prod
+      LIQUIBASE_USERNAME: root
+      LIQUIBASE_PASSWORD: admin123
+    volumes:
+      - ./src/main/resources/db/changelog:/liquibase/changelog
+    ports: 
+      - 8000:8000
+    depends_on:
+      - naming-server
+      - cambio-db
+    networks:
+      - gabriel-network
+
+  book-service:
+    image: book-service
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo 
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
+      SPRING.DATASOURCE.URL: jdbc:mysql://book-db:3310/book_service?useSSL=false&enabledTLSProtocols=TLSv1.2&createDatabaseIfNotExist=true&serverTimezone=UTC
+      SPRING.DATASOURCE.USERNAME: root
+      SPRING.DATASOURCE.PASSWORD: admin123
+      LIQUIBASE_CHANGELOG: classpath:db/changelog/db.changelog-master.xml
+      LIQUIBASE_CONTEXTS: prod
+      LIQUIBASE_USERNAME: root
+      LIQUIBASE_PASSWORD: admin123
+    volumes:
+      - ./src/main/resources/db/changelog:/liquibase/changelog
+    ports: 
+      - 8100:8100
+    depends_on:
+      - naming-server
+      - book-db
+    networks:
+      - gabriel-network
+
+  cambio-db:
+    image: mysql:8.0.32
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo 
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_USER: docker 
+      MYSQL_PASSWORD: admin123 
+      MYSQL_DATABASE: cambio_service
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_TCP_PORT: 3308
+    ports: 
+      - 3308:3308
+    expose:
+      - 3308
+    networks:
+      - gabriel-network
+
+  book-db:
+    image: mysql:8.0.32
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo 
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_USER: docker 
+      MYSQL_PASSWORD: admin123 
+      MYSQL_DATABASE: book_service
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_TCP_PORT: 3310
+    ports: 
+      - 3310:3310
+    expose:
+      - 3310
+    networks:
+      - gabriel-network
+
+networks:
+  gabriel-network:
+    driver: bridge
+
+
+  
