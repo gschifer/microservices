@@ -21,6 +21,7 @@ jobs:
         uses: actions/setup-java@v3.10.0
         with:
           java-version: '17'
+          distribution: 'adopt'
           
       - name: Build Eureka Naming Server Image
         working-directory: ./naming-server
