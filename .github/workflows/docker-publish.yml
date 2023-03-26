@@ -36,5 +36,9 @@ jobs:
         run: mvn clean package
 
       - name: Build Cambio Service JAR Image
-        working-directory: ./Cambio-service
+        working-directory: ./cambio-service
         run: mvn clean package
+
+      - name: Docker Compose Build
+        working-directory: .
+        run: docker compose build
