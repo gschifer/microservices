@@ -31,12 +31,12 @@ jobs:
         working-directory: ./api-gateway
         run: mvn spring-boot:build-image
         
-      - name: Build Book Service JAR Image
-        working-directory: ./book-service
-        run: mvn clean package
-
       - name: Build Cambio Service JAR Image
         working-directory: ./cambio-service
+        run: mvn clean package
+
+      - name: Build Book Service JAR Image
+        working-directory: ./book-service
         run: mvn clean package
 
       - name: Docker Compose Build
