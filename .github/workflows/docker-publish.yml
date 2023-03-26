@@ -23,18 +23,18 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
           
-      - name: Build Eureka Naming Server Image
+      - name: Build Eureka Naming Server Container Image
         working-directory: ./naming-server
         run: mvn spring-boot:build-image
         
-      - name: Build API Gateway Image
+      - name: Build API Gateway Container Image
         working-directory: ./api-gateway
         run: mvn spring-boot:build-image
         
-      - name: Build Book Service Image
+      - name: Build Book Service JAR Image
         working-directory: ./book-service
-        run: mvn spring-boot:build-image
+        run: mvn clean package
 
-      - name: Build Cambio Service Image
+      - name: Build Cambio Service JAR Image
         working-directory: ./Cambio-service
-        run: mvn spring-boot:build-image
+        run: mvn clean package
