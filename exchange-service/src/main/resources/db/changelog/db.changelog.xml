@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="1" author="Gabriel Schiferdecke">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cambios"/>
+            </not>
+        </preConditions>
+        <sqlFile path="db/changelog/V1__Create_Table_Cambios.sql"/>
+    </changeSet>
+    <changeSet id="2" author="Gabriel Schiferdecke">
+        <sqlFile path="db/changelog/V2__Insert_Data_In_Cambios.sql"/>
+    </changeSet>
+
+</databaseChangeLog>
