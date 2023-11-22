@@ -21,6 +21,18 @@ jobs:
           cache: maven
 
       - name: Build Book Microservice Image
-        working-directory: ./books
+        working-directory: ./book-service
+        run: mvn spring-boot:build-image -DskipTests
+
+      - name: Build Exchange Microservice Image
+        working-directory: ./exchange-service
+        run: mvn spring-boot:build-image -DskipTests
+
+      - name: Build Gateway Microservice Image
+        working-directory: ./gateway-service
+        run: mvn spring-boot:build-image -DskipTests
+
+      - name: Build Registry Microservice Image
+        working-directory: ./registry-service
         run: mvn spring-boot:build-image -DskipTests
 
