@@ -21,6 +21,6 @@ jobs:
           cache: maven
 
       - name: Build Book Microservice Image
-          working-directory: ./books
-          run: mvn spring-boot:build-image -DskipTests
+        working-directory: ./books
+        run: mvn spring-boot:build-image -DskipTests
 
