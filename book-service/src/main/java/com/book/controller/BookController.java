@@ -1,8 +1,9 @@
-package com.book.controllers;
+package com.book.controller;
 
-import com.book.entities.Book;
+import com.book.dto.BookDTO;
+import com.book.entity.Book;
 import com.book.proxy.CambioProxy;
-import com.book.services.BookService;
+import com.book.service.BookService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,19 +24,20 @@ public class BookController {
 
 
     @GetMapping(value = "/{id}/{currency}")
-    public Book findBook(@PathVariable("id") Long id, @PathVariable("currency") String currency) {
-
-        String port = String.valueOf(serverProperties.getPort());
-
+    public BookDTO findBook(@PathVariable("id") Long id, @PathVariable("currency") String currency) {
         Book book = service.getBookById(id);
 
         var cambio = proxy.getCambio(book.getPrice(), "USD", currency);
 
-        book.setEnvironment("book port" + port + " Cambio port" + cambio.getEnvironment());
-        book.setPrice(cambio.getConvertedValue());
-        book.setCurrency(currency);
-
-        return book;
+        return BookDTO.builder()
+                .id(book.getId())
+                .title(book.getTitle())
+                .author(book.getAuthor())
+                .launchDate(book.getLaunchDate())
+                .price(cambio.getConvertedValue())
+                .currency(currency)
+                .environment("book port" + serverProperties.getPort() + " Cambio port" + cambio.getEnvironment())
+                .build();
     }
 
     @GetMapping

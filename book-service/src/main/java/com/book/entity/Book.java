@@ -1,4 +1,4 @@
-package com.book.entities;
+package com.book.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,10 +32,4 @@ public class Book implements Serializable {
 
     @Column(nullable = false, length = 250)
     private String title;
-
-    @Transient
-    private String currency;
-
-    @Transient
-    private String environment;
 }

@@ -1,4 +1,4 @@
-package com.exchange.services;
+package com.exchange.service;
 
 import com.exchange.entities.Cambio;
 import com.exchange.exception.UnsupportedConversionException;

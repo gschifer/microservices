@@ -1,10 +1,9 @@
-package com.exchange.controllers;
+package com.exchange.controller;
 
 
 import com.exchange.entities.Cambio;
-import com.exchange.services.CambioService;
+import com.exchange.service.CambioService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.web.bind.annotation.*;
 
